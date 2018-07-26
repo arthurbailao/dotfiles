@@ -154,8 +154,10 @@ For a better user experience of GNU Emacs, here are the default values I use.
    select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
    tab-width 4                                      ; Set width for tabs
    use-package-always-ensure t                      ; Avoid the :ensure keyword for each package
-   user-full-name "Terencio Agozzino"               ; Set the full name of the current user
-   user-mail-address "terencio.agozzino@gmail.com"  ; Set the email address of the current user
+   make-backup-files nil                            ; Stop creating backup~ files
+   auto-save-default nil                            ; Stop creating #autosave# files
+   user-full-name "Arthur Bailão"                   ; Set the full name of the current user
+   user-mail-address "arthurbailao@gmail.com"       ; Set the the email address of the current user
    vc-follow-symlinks t)                            ; Always follow the symlinks
   (cd "~/")                                         ; Move to the user directory
   (column-number-mode 1)                            ; Show the column number
@@ -181,10 +183,10 @@ user with the UI, I add the generated code in a separate file.
 I like the light on dark because I find it to be more restful.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package nord-theme
+  (use-package atom-one-dark-theme
     :config
     (add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/themes/"))
-    (load-theme 'nord t))
+    (load-theme 'atom-one-dark t))
 
   (use-package smart-mode-line
     :defer 0.1
