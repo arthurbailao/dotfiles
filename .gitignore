@@ -1,0 +1,25 @@
+# GNU Emacs
+*~
+*.elc
+/anaconda-mode/
+/auto-save-list/
+/backups/
+/elpa/
+.abbrev_defs
+config.el
+custom.el
+history
+org-clock-save.el
+plantuml.jar
+
+# Third-party packages
+.projectile-bookmarks
+.projectile-cache
+recentf
+smex-items
+/url/
+/var/
+/history
+bookmarks
+nov-places
+tramp
