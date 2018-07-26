@@ -73,4 +73,4 @@ export DOTFILES
 
 git submodule update --init
 
-#symlink "vim" ".config/nvim"
+symlink "emacs" ".emacs.d"
