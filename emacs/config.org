@@ -146,6 +146,7 @@ For a better user experience of GNU Emacs, here are the default values I use.
    cursor-in-non-selected-windows t                 ; Hide the cursor in inactive windows
    display-time-default-load-average nil            ; Don't display load average
    fill-column 80                                   ; Set width for automatic line breaks
+   visible-bell 1                                   ; Emacs flashes de screen
    help-window-select t                             ; Focus new help windows when opened
    inhibit-startup-screen t                         ; Disable start-up screen
    initial-scratch-message ""                       ; Empty the initial *scratch* buffer
@@ -185,7 +186,7 @@ user with the UI, I add the generated code in a separate file.
     (load custom-file t))
 #+END_SRC
 
-** COMMENT Font
+** Font
 #+BEGIN_SRC emacs-lisp :tangle yes
   (when (window-system)
     (set-frame-font "Fira Code"))
@@ -222,6 +223,15 @@ I find invasive.
     (tooltip-mode -1))                              ; Disable the tooltips
 #+END_SRC
 
+** Matching Titlebar color on MacOS
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+  (setq ns-use-proxy-icon  nil)
+  (setq frame-title-format nil)
+
+#+END_SRC
 * Languages
 
 ** COMMENT CSS
@@ -277,6 +287,15 @@ system clean.
     :mode "Dockerfile\\'")
 #+END_SRC
 
+** Elixir
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package elixir-mode)
+
+  (add-hook 'elixir-mode-hook
+            (lambda () (add-hook 'before-save-hook 'elixir-format nil t)) )
+
+(use-package alchemist)
+#+END_SRC
 ** Emacs Lisp
 
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -716,6 +735,12 @@ and multiple, selectable "styles", whose use is fully customizable by the user.
     :custom (alert-default-style 'libnotify))
 #+END_SRC
 
+** All The Icons
+Just don't forget to run M-x all-the-icons-install-fonts after start your Emacs for the first time.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package all-the-icons :ensure t)
+#+END_SRC
 ** Auto-Completion
 
 =company= provides auto-completion at point and to Displays a small pop-in
@@ -749,6 +774,50 @@ I use =company= with =company-box= that allows a company front-end with icons.
      :after company
      :diminish
      :hook (company-mode . company-box-mode))
+#+END_SRC
+
+Configuring icons-in-terminal
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (add-to-list 'load-path (expand-file-name "icons-in-terminal/build/icons-in-terminal.el" user-emacs-directory))
+
+  (setq company-box-icons-unknown 'fa_question_circle)
+
+(setq company-box-icons-elisp
+   '((fa_tag :face font-lock-function-name-face) ;; Function
+     (fa_cog :face font-lock-variable-name-face) ;; Variable
+     (fa_cube :face font-lock-constant-face) ;; Feature
+     (md_color_lens :face font-lock-doc-face))) ;; Face
+
+(setq company-box-icons-yasnippet 'fa_bookmark)
+
+(setq company-box-icons-lsp
+      '((1 . fa_text_height) ;; Text
+        (2 . (fa_tags :face font-lock-function-name-face)) ;; Method
+        (3 . (fa_tag :face font-lock-function-name-face)) ;; Function
+        (4 . (fa_tag :face font-lock-function-name-face)) ;; Constructor
+        (5 . (fa_cog :foreground "#FF9800")) ;; Field
+        (6 . (fa_cog :foreground "#FF9800")) ;; Variable
+        (7 . (fa_cube :foreground "#7C4DFF")) ;; Class
+        (8 . (fa_cube :foreground "#7C4DFF")) ;; Interface
+        (9 . (fa_cube :foreground "#7C4DFF")) ;; Module
+        (10 . (fa_cog :foreground "#FF9800")) ;; Property
+        (11 . md_settings_system_daydream) ;; Unit
+        (12 . (fa_cog :foreground "#FF9800")) ;; Value
+        (13 . (md_storage :face font-lock-type-face)) ;; Enum
+        (14 . (md_closed_caption :foreground "#009688")) ;; Keyword
+        (15 . md_closed_caption) ;; Snippet
+        (16 . (md_color_lens :face font-lock-doc-face)) ;; Color
+        (17 . fa_file_text_o) ;; File
+        (18 . md_refresh) ;; Reference
+        (19 . fa_folder_open) ;; Folder
+        (20 . (md_closed_caption :foreground "#009688")) ;; EnumMember
+        (21 . (fa_square :face font-lock-constant-face)) ;; Constant
+        (22 . (fa_cube :face font-lock-type-face)) ;; Struct
+        (23 . fa_calendar) ;; Event
+        (24 . fa_square_o) ;; Operator
+        (25 . fa_arrows)) ;; TypeParameter
+      )
+
 #+END_SRC
 
 ** COMMENT Backups
@@ -1042,6 +1111,13 @@ The code below, executes =org-babel-tangle= asynchronously when
   (use-package nov
     :mode ("\\.epub\\'" . nov-mode)
     :custom (nov-text-width 75))
+
+  (defun my-nov-font-setup ()
+    (face-remap-add-relative 'variable-pitch
+    :family "Liberation Serif"
+    :heigh 1.5 ))
+
+  (add-hook 'nov-mode-hook 'my-nov-font-setup)
 #+END_SRC
 
 ** COMMENT Files Frequently Consulted
@@ -2091,6 +2167,17 @@ From: http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-
 (global-set-key [remap move-beginning-of-line] #'my/smarter-move-beginning-of-line)
 #+END_SRC
 
+** NeoTree
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package neotree
+    :ensure t
+    :init
+    (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+
+  (global-set-key [f8] 'neotree-toggle)
+
+#+END_SRC
 ** Parenthesis
 
 *** =rainbow-delimiters=

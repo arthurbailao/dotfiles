@@ -1,0 +1,3 @@
+[submodule "emacs/icons-in-terminal"]
+	path = emacs/icons-in-terminal
+	url = git@github.com:sebastiencs/icons-in-terminal.git
