@@ -187,10 +187,17 @@ user with the UI, I add the generated code in a separate file.
 #+END_SRC
 
 ** Font
+
+Using Fira Code with ligatures
+
 #+BEGIN_SRC emacs-lisp :tangle yes
   (when (window-system)
     (set-frame-font "Fira Code"))
   (set-face-attribute 'default nil :height 130)
+
+(if (fboundp 'mac-auto-operator-composition-mode)
+    (mac-auto-operator-composition-mode))
+
 
 #+END_SRC
 ** Theme
@@ -1983,6 +1990,13 @@ Now all we have to do is configure =ledger-mode=:
 
 *NOTE:* by default, =ledger= uses the [[ https://xkcd.com/1179/][ISO 8601]] format to write dates, which is the recommended
 format.
+
+** Line Numbers
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(when (version<= "26.0.50" emacs-version )
+  (global-display-line-numbers-mode))
+#+END_SRC
 
 ** Linters
 
