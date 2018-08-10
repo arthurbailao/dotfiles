@@ -1,5 +1,3 @@
-#+AUTHOR: Terencio Agozzino
-#+TITLE: GNU Emacs Configuration
 
 * Table of Content                                                    :TOC:
 - [[#about][About]]
@@ -153,7 +151,7 @@ For a better user experience of GNU Emacs, here are the default values I use.
    load-prefer-newer t                              ; Prefers the newest version of a file
    scroll-conservatively most-positive-fixnum       ; Always scroll by one line
    select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
-   tab-width 4                                      ; Set width for tabs
+   tab-width 2                                      ; Set width for tabs
    use-package-always-ensure t                      ; Avoid the :ensure keyword for each package
    make-backup-files nil                            ; Stop creating backup~ files
    auto-save-default nil                            ; Stop creating #autosave# files
@@ -230,7 +228,7 @@ I find invasive.
     (tooltip-mode -1))                              ; Disable the tooltips
 #+END_SRC
 
-** Matching Titlebar color on MacOS
+** COMMENT Matching Titlebar color on MacOS
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
@@ -319,6 +317,21 @@ Provides minibuffer hints when working with Emacs Lisp.
   (use-package eldoc
     :diminish
     :hook (emacs-lisp-mode . eldoc-mode))
+#+END_SRC
+** Go
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package go-mode
+    :config
+    (setq gofmt-command "goimports"))
+
+  (add-hook 'before-save-hook #'gofmt-before-save)
+
+  (use-package company-go)
+
+  (add-hook 'go-mode-hook (lambda ()
+                          (set (make-local-variable 'company-backends) '(company-go))
+                          (company-mode)))
 #+END_SRC
 
 ** HTML
@@ -2009,7 +2022,8 @@ Flycheck lints warnings and errors directly within buffers.
            (emacs-lisp-mode . flycheck-mode)
            (js-mode . flycheck-mode)
            (ledger-mode . flycheck-mode)
-           (python-mode . flycheck-mode))
+           (python-mode . flycheck-mode)
+	   (go-mode . flycheck-mode))
     :custom
     (flycheck-check-syntax-automatically '(save mode-enabled))
     (flycheck-disabled-checkers '(emacs-lisp-checkdoc))
