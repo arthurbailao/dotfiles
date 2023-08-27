@@ -71,6 +71,4 @@ symlink() {
 DOTFILES="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export DOTFILES
 
-git submodule update --init
-
-symlink "emacs" ".emacs.d"
+symlink "nvim" ".config/nvim"
